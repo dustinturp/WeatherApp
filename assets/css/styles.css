@@ -1,0 +1,15 @@
+* {
+
+}
+
+.current-day {
+    border-style: solid;
+}
+
+/* .search-area {
+    height: 100%;
+} */
+
+.search-history {
+    height: 100px;
+}
