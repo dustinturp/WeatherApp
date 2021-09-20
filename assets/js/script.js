@@ -4,7 +4,7 @@ let mainEl = document.querySelector("#app-content-row");
 let cityInputEl = document.querySelector("#search-box-area");
 
 //show time in current weather section
-const displayTime = setInterval(myTimer, 1000);
+// const displayTime = setInterval(myTimer, 1000);
 
 function myTimer() {
   let d = new Date();
@@ -99,6 +99,9 @@ const currentWeather = function(currentTemp, WindCurrent, HumidityCurrent, uvInd
     currentDayEl.setAttribute("id", "current-day-weather");
     //will hold weather data temp, wind, Humidity, uvIndex
     mainEl.appendChild(currentDayEl);
+    // const displayTime = setInterval(myTimer, 1000);
+    myTimer();
+    //city searched add to page 
 
     //current temp
     let currentTempEl = document.createElement("h3");
@@ -125,25 +128,12 @@ const currentWeather = function(currentTemp, WindCurrent, HumidityCurrent, uvInd
     //current UV
     let currentUvEl = document.createElement("h3");
     currentUvEl.classList = "current-uv";
-    ccurrentUvEl.setAttribute("id","current-uv");
+    currentUvEl.setAttribute("id","current-uv");
     currentUvEl.textContent = uvIndex;
     currentDayEl.appendChild(currentUvEl);
 
 };
-currentWeather();
 
-//function to generate cards 5 day forecast ////// may remove if formatting works with
-// const genCardContainer = function() {
-//     //only need to create container once
-//     cardContainer.classList = "container";
-//     //add card container to body
-//     mainEl.appendChild(cardContainer);
-
-//     //only need to create row once
-//     cardRow.classList = "row";
-//     //add card row to container
-//     cardContainer.appendChild(cardRow);
-// }
 
 const generateCard = function(cardDate, imgSrc, temp, wind, humidity) {
 
@@ -187,12 +177,8 @@ const generateCard = function(cardDate, imgSrc, temp, wind, humidity) {
     cardBody.appendChild(cardInfoHumid);
 };
 // test generate card
-// genCardContainer();
 // generateCard("123");
-// generateCard("123");
-// generateCard("123");
-// generateCard("test Day");
-// generateCard("Day test");
+
 
 //fetch weather api
 // remember to trim input of extra white spaces. and lowercase them
@@ -230,25 +216,26 @@ function searchCityWeather(cityName) {
     })
     .then(function (res){
         console.log('res', res);
+        let dateWeather = res.daily[0].dt;
+        let weatherImg = res.daily[0].weather[0].icon;
+        let temp = res.daily[0].temp.day;
+        let wind = res.daily[0].wind_speed;
+        let humidity = res.daily[0].humidity;
+        currentWeather(dateWeather, weatherImg, temp, wind, humidity);
         // fill in 5 day 
-        let dateWeather = "";
-        let weatherImg = "";
-        let temp = "";
-        let wind = "";
-        let humidity = "";
         for(i = 0; i < res.daily.length; i++) {
             // console.log(res.daily[i])
-            //test for dt
             dateWeather = res.daily[i].dt;
-            console.log(dateWeather)
+            console.log(dateWeather);
             weatherImg = res.daily[i].weather[0].icon;
-            console.log(weatherImg)
+            console.log(weatherImg);
             temp = res.daily[i].temp.day;
             console.log(temp);
             wind = res.daily[i].wind_speed;
             console.log(wind);
-            humidity = res.daily[i].humidity
-            generateCard(dateWeather, weatherImg, temp, wind, humidity)
+            humidity = res.daily[i].humidity;
+            generateCard(dateWeather, weatherImg, temp, wind, humidity);
+            
             if ( i === 4){
                 break;
             }
